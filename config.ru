@@ -1,0 +1,3 @@
+require './sheepdog'
+
+run Sheepdog
