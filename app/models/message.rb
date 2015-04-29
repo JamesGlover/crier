@@ -25,7 +25,7 @@ class Message
   end
 
   def classes
-    types.join(' ')
+    types.map {|t| "panel-#{t}" }.join(' ')
   end
 
 end

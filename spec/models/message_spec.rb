@@ -20,14 +20,16 @@ describe Message do
     let(:expected_message_date) { Time.new('2015-04-28 16:30:50 +0100') }
     let(:expected_message_body) { 'This is an example' }
     let(:expected_message_types) { ['warning', 'status'] }
+    let(:expected_message_css_classes) { 'panel-warning panel-status' }
     let(:message) { Message.find(message_name) }
 
     it 'should parse them' do
-      expect(message.name).to eq(message_name)
-      expect(message.title).to eq(expected_message_title)
-      expect(message.date).to eq(expected_message_date)
-      expect(message.body).to eq(expected_message_body)
-      expect(message.types).to eq(expected_message_types)
+      expect(message.name   ).to eq(message_name)
+      expect(message.title  ).to eq(expected_message_title)
+      expect(message.date   ).to eq(expected_message_date)
+      expect(message.body   ).to eq(expected_message_body)
+      expect(message.types  ).to eq(expected_message_types)
+      expect(message.classes).to eq(expected_message_css_classes)
     end
 
   end
