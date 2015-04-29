@@ -2,6 +2,8 @@ require './lib/filesystem_persister'
 
 class Message
 
+  CSS_CLASS_PREFIX = 'panel-'
+
   include FilesystemPersister::Persisted
 
   attr_reader :name
@@ -25,7 +27,7 @@ class Message
   end
 
   def classes
-    types.map {|t| "panel-#{t}" }.join(' ')
+    types.map {|t| CSS_CLASS_PREFIX + t }.join(' ')
   end
 
 end
