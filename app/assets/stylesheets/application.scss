@@ -1,0 +1,13 @@
+// customize bootstrap variables here:
+@import "bootstrap";
+// Generate the medium columns
+
+.message {
+  @include make-md-column(12,0);
+  @include make-md-column-offset(0);
+}
+
+.low-priority {
+  @include make-md-column(4,0);
+  @include make-md-column-offset(0);
+}

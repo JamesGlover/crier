@@ -1,0 +1,5 @@
+<div id='message_centre'>
+  <% messages.each do |message| %>
+    <%= erb(:_message, :layout => false, :locals=>{:message=>message}) %>
+  <% end %>
+</div>

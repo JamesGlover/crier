@@ -101,7 +101,7 @@ module FilesystemPersister
 
       def new_from_file(file)
         name = File.basename(file.path)
-        attributes = JSON.load file
+        attributes = JSON.load(file)
         new(attributes.merge(name:name))
       end
     end
@@ -110,10 +110,35 @@ module FilesystemPersister
       base.class_eval { extend ClassMethods }
     end
 
+    def save
+      attributes = to_hash
+      name = attributes.delete('name')
+      File.open(filename,'w+') do |f|
+        f << attributes.to_json
+      end
+      true
+    end
+
+    def delete
+      File.delete(filename) if File.exist?(filename)
+      nil
+    end
+
+    def to_hash
+      Hash[instance_variables.map {|v| [v.to_s.gsub('@',''),instance_variable_get(v)]}]
+    end
+
+    private
+
     def initialize(hash)
       hash.each do |key,value|
         instance_variable_set("@#{key}",value)
       end
+    end
+
+    def filename
+      raise StandardError if self.class.send(:model_dir).nil? || name.nil?
+      "#{self.class.send(:model_dir)}/#{name}"
     end
   end
 end
