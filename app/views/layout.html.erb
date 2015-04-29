@@ -1,0 +1,31 @@
+<%#This file is part of MINI-LIMS; it is distributed under the terms of GNU General Public License version 1 or later;
+#Please refer to the LICENSE and README files for information on licensing and authorship of this file.
+#Copyright (c) 2015 Genome Research Ltd.%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= css :application, media: 'screen' %>
+    <%= js :application %>
+  </head>
+  <title
+<body>
+
+ <!-- %= erb(:_menu, :layout => false, :locals=>{:presenter=>presenter}) % -->
+
+<div class="container" id="body">
+    <div id="alerts-box">
+    <!-- Just a whole app outline -->
+    <% render_messages do |klass,message| %>
+      <div class='alert alert-<%= klass %>'><%= message %></div>
+    <% end %>
+    </div>
+
+  <%= yield %>
+
+</div>
+<div class="container" id="footer">
+  <p class="muted"><%= version_information %></p>
+</div>
+
+</body>
+</html>
