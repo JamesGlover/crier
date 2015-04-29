@@ -4,7 +4,17 @@ require 'json'
 # persistence of a given model in the filesystem as json files.
 #
 # Usage:
-# include FilesystemPersiter::Persisted in any classes
+# Include FilesystemPersiter::Persisted in any classes that require persistence
+# Optionally use persisted_in to define the name of a subdirectory for the class
+# By default, the persister looks in a downcased classname
+#
+# Configuration:
+# By default, the persister looks in the ./store directory in the root of the
+# application. You can use:
+# FilesystemPersister::Config.directory='your_directory'
+#
+# This is not intended for cases where there will be more than a handful of
+# records
 module FilesystemPersister
 
   DEFAULT_STORE = './store'
@@ -13,24 +23,33 @@ module FilesystemPersister
 
     class << self
 
-      def new(*args)
-        @singleton ||= super(*args)
-      end
-
+      ##
+      # Yields the configuration object to a block, allowing the config to be set
+      # Options are:
+      # directory: the base directory for persisted files
       def configure
         yield new
         @singleton
       end
 
+      private
+
       def method_missing(*args)
-        Config.new.send(*args)
+        new.send(*args)
+      end
+
+      def new(*args)
+        @singleton ||= super(*args)
       end
 
     end
 
     attr_accessor :directory
 
+    private
+
     def initialize(directory:DEFAULT_STORE)
+      @directory = directory
     end
 
   end
@@ -38,13 +57,16 @@ module FilesystemPersister
   module Persisted
 
     module ClassMethods
+      ##
+      # Retrieves the record identified by the given name
       def find(name)
-        return nil unless /^[[:alnum:]_]+$/ === name
-        filename = "#{model_dir}/#{name}"
-        return nil unless File.exist?(filename)
-        fetch(filename)
+        return nil unless valid_filename?(name)
+        fetch("#{model_dir}/#{name}")
       end
 
+      ##
+      # Returns and array of all records
+      # Caution! All records will be immediately instantiated
       def all(*args)
         all_filenames.map do |filename|
           fetch(filename)
@@ -52,6 +74,12 @@ module FilesystemPersister
       end
 
       private
+
+      def valid_filename?(filename)
+        return false unless /^[[:alnum:]_]+$/ === filename
+        return false unless File.exist?("#{model_dir}/#{filename}")
+        true
+      end
 
       def persisted_in(directory)
         @sub_dir = directory
