@@ -13,7 +13,7 @@ describe Crier do
     end
 
     it "should return json if requested" do
-      get '/messages', {}, {'HTTP_ACCEPT' => 'application/json'}
+      get_json '/messages'
       expect(last_response).to be_ok
       expect(JSON.load(last_response.body)).to eq(
         {"messages"=>[
@@ -60,7 +60,7 @@ describe Crier do
 
     it "should be deletable via the API" do
       expect(Message).to receive(:find).with(example_name).and_return(message_to_delete)
-      delete "/messages/#{example_name}", {}, {'HTTP_ACCEPT' => 'application/json'}
+      delete_json "/messages/#{example_name}"
       expect(last_response).to be_ok
       expect(JSON.load(last_response.body)).to eq({
         "message"=>"Message #{example_name} was deleted.",
@@ -72,6 +72,25 @@ describe Crier do
     end
 
     it "should be gettable" do
+      get '/messages/test_a'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include "Test a"
+      expect(last_response.body).to include "This is an example"
+    end
+
+
+    it "should be gettable via the api" do
+      get_json '/messages/test_a'
+      expect(last_response).to be_ok
+      expect(JSON.load(last_response.body)).to eq(
+        {"message"=>{
+            "body"=>"This is an example",
+            "date"=>"2015-01-01 00:00:00 +0000",
+            "types"=>["warning","status"],
+            "name"=>"test_a"
+          }
+        }
+      )
     end
 
   end

@@ -57,14 +57,15 @@ class Crier < Sinatra::Base
     respond_with :index, messages:Message.all
   end
 
-
   delete '/messages/:name' do
     message = Message.find(params['name']) || pass
     message.delete
     respond_with :report, message:"Message #{params['name']} was deleted.",status:"success"
   end
 
-  put '/messages/:name' do
+  get '/messages/:name' do
+    message = Message.find(params['name']) || pass
+    respond_with :message, message:message
   end
 
 end
