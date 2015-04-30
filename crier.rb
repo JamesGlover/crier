@@ -8,7 +8,7 @@ require './app/models/message'
 
 
 begin
-  require "./config/#{ENV['RACK_ENV'].downcase}dd"
+  require "./config/#{ENV['RACK_ENV'].downcase}"
 rescue LoadError
   $stderr.puts '*'*80
   $stderr.puts "No configuration file found for environment '#{ENV['RACK_ENV']}'."
