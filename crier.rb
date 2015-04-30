@@ -57,15 +57,11 @@ class Crier < Sinatra::Base
     respond_with :index, messages:Message.all
   end
 
-  # get '/messages', :provides => 'json' do
-  #   erb :index, locals: {messages:Message.all}
-  # end
-
 
   delete '/messages/:name' do
     message = Message.find(params['name']) || pass
     message.delete
-    erb :deleted, locals:{message_name:params['name']}
+    respond_with :report, message:"Message #{params['name']} was deleted.",status:"success"
   end
 
   put '/messages/:name' do

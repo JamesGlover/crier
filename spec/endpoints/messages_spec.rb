@@ -58,6 +58,16 @@ describe Crier do
       expect(last_response.body).to include("Message #{example_name} was deleted.")
     end
 
+    it "should be deletable via the API" do
+      expect(Message).to receive(:find).with(example_name).and_return(message_to_delete)
+      delete "/messages/#{example_name}", {}, {'HTTP_ACCEPT' => 'application/json'}
+      expect(last_response).to be_ok
+      expect(JSON.load(last_response.body)).to eq({
+        "message"=>"Message #{example_name} was deleted.",
+        "status"=>"success"
+      })
+    end
+
     it "should be updateable" do
     end
 
