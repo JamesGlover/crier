@@ -1,9 +1,11 @@
-<div id='msg_deleted' class='panel panel-<%= status %> message' >
-  <div class='panel-heading'>
-    <h2 class='panel-title'><%= status.capitalize %>!</h2>
-  </div>
-  <div class='panel-body'>
-    <p><%= message %></p>
+<%= erb(:_navbar, :layout => false) %>
+<div id='message_centre'>
+  <div id='msg_deleted' class='panel panel-<%= status %> message' >
+    <div class='panel-heading'>
+      <h2 class='panel-title'><%= status.capitalize %>!</h2>
+    </div>
+    <div class='panel-body'>
+      <p><%= message %></p>
+    </div>
   </div>
 </div>
-<a href='/messages'>Back...</a>

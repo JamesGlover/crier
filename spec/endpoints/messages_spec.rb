@@ -34,6 +34,7 @@ describe Crier do
     end
 
     context 'should allow message creation' do
+
     end
 
   end

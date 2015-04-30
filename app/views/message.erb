@@ -1,2 +1,4 @@
-<%= erb(:_message, :layout => false, :locals=>{:message=>message}) %>
-<a href='/messages'>Back...</a>
+<%= erb(:_navbar, :layout => false) %>
+<div id='message_centre'>
+  <%= erb(:_message, :layout => false, :locals=>{:message=>message}) %>
+</div>
