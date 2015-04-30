@@ -121,7 +121,11 @@ module FilesystemPersister
 
     def delete
       File.delete(filename) if File.exist?(filename)
-      nil
+      true
+    end
+
+    def to_json(*args)
+      to_hash.to_json(*args)
     end
 
     def to_hash

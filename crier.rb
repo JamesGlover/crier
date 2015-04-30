@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra/respond_with'
 
 require 'sass'
 require 'bootstrap-sass'
@@ -18,6 +19,8 @@ rescue LoadError
 end
 
 class Crier < Sinatra::Base
+
+  register Sinatra::RespondWith
 
   set :server, :puma
   register Sinatra::AssetPack
@@ -44,8 +47,28 @@ class Crier < Sinatra::Base
     css_compression :sass
   end
 
+  respond_to :html, :json
+
   get '/' do
-    erb :index, locals: {messages:Message.all}
+    redirect '/messages'
+  end
+
+  get '/messages' do
+    respond_with :index, messages:Message.all
+  end
+
+  # get '/messages', :provides => 'json' do
+  #   erb :index, locals: {messages:Message.all}
+  # end
+
+
+  delete '/messages/:name' do
+    message = Message.find(params['name']) || pass
+    message.delete
+    erb :deleted, locals:{message_name:params['name']}
+  end
+
+  put '/messages/:name' do
   end
 
 end
