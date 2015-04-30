@@ -7,7 +7,7 @@
   @include make-md-column-offset(0);
 }
 
-.low-priority {
-  @include make-md-column(4,0);
-  @include make-md-column-offset(0);
+.panel-low-priority {
+  @include make-md-column(3.9,0);
+  @include make-md-column-offset(0.1);
 }

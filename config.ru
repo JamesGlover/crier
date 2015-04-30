@@ -1,4 +1,4 @@
 #! -s puma
-require './sheepdog'
+require './crier'
 
-run Sheepdog
+run Crier

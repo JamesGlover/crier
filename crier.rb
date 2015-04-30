@@ -6,7 +6,7 @@ require 'bootstrap-sass'
 require 'sinatra/assetpack'
 require './app/models/message'
 
-class Sheepdog < Sinatra::Base
+class Crier < Sinatra::Base
 
   set :server, :puma
   register Sinatra::AssetPack
