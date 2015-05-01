@@ -1,4 +1,4 @@
-require './lib/filesystem_persister'
+require './lib/filesystem_persister/persisted'
 
 class Message
 
