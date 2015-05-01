@@ -52,6 +52,16 @@ describe Message do
     expect(new_message.types).to eq(new_types)
   end
 
+  context 'with invalid names' do
+    let(:new_name) { '../new_message' }
+
+    it 'should not save' do
+      message = new_message
+      expect(message.save).to eq(false)
+      expect(message.errors).to eq(['Name can only contain letters, numbers and underscores.'])
+    end
+  end
+
   context 'after saving' do
 
     it 'can be retrieved and deleted' do

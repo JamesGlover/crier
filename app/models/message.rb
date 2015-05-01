@@ -6,7 +6,6 @@ class Message
 
   include FilesystemPersister::Persisted
 
-  attr_reader :name
   attr_accessor :types, :body
 
   def date

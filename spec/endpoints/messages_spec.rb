@@ -35,6 +35,24 @@ describe Crier do
 
     context 'should allow message creation' do
 
+      let(:time_created)  { Time.new('2015-01-01 16:30:00 +0100') }
+      let(:at_fixed_time) { allow(Time).to receive(:now).and_return(time_created) }
+
+      let(:example_name)         { 'example' }
+      let(:example_display_name) { 'Example' }
+      let(:example_body)         { 'This is a message' }
+      let(:example_types)        { ['type-a','type-b'] }
+
+      let(:message_to_save) { double('message_to_save').tap {|mts| expect(mts).to receive(:save)                                  } }
+
+      it 'via post' do
+        at_fixed_time
+        expect(Message).to receive(:new).with(name:example_name,body:example_body,types:example_types).and_return(message_to_save)
+        post '/messages', name:example_name, body:example_body, types: example_types
+        expect(last_response).to be_redirect
+        expect(last_response.location).to include "/messages/#{example_name}"
+      end
+
     end
 
   end

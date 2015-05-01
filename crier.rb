@@ -57,6 +57,12 @@ class Crier < Sinatra::Base
     respond_with :index, messages:Message.all
   end
 
+  post '/messages' do
+    message = Message.new(name:params['name'],body:params['body'],types:params['types'])
+    message.save
+    redirect "/messages/#{params['name']}"
+  end
+
   delete '/messages/:name' do
     message = Message.find(params['name']) || pass
     message.delete
