@@ -59,8 +59,12 @@ class Crier < Sinatra::Base
 
   post '/messages' do
     message = Message.new(name:params['name'],body:params['body'],types:params['types'])
-    message.save
-    redirect "/messages/#{params['name']}"
+    if message.save
+      redirect "/messages/#{params['name']}"
+    else
+      response.status = 403
+      respond_with :report, message:"#{message.errors.join(';')}",status:"danger"
+    end
   end
 
   delete '/messages/:name' do
