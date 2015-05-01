@@ -68,7 +68,9 @@ describe Crier do
     let(:at_fixed_time) { allow(Time).to receive(:now).and_return(time_created) }
 
     let(:message_to_delete) { double('message_to_delete').tap {|sfd| expect(sfd).to receive(:delete)                                  }  }
-    let(:message_to_update) { double('message_to_update').tap {|sfd| expect(sfd).to receive(:update).with(example_body,example_types) }  }
+    let(:message_to_update) { example_message }
+
+    let(:example_message) { Message.new(name:example_name,body:example_body,types:example_types,date:time_created.to_s) }
 
     it "should be deletable" do
       expect(Message).to receive(:find).with(example_name).and_return(message_to_delete)
@@ -88,6 +90,24 @@ describe Crier do
     end
 
     it "should be updateable" do
+      expect(Message).to receive(:find).with(example_name).and_return(message_to_update)
+      put "/messages/#{example_name}", body:example_body,types:example_types
+      expect(last_response).to be_ok
+      expect(last_response.body).to include example_body
+    end
+
+    it "should be updateable vi the api" do
+      expect(Message).to receive(:find).with(example_name).and_return(message_to_update)
+      put_json "/messages/#{example_name}", body:example_body,types:example_types
+      expect(last_response).to be_ok
+      expect(JSON.load(last_response.body)).to eq({
+        "message" => {
+          "body"=>example_body,
+          "date"=>time_created.to_s,
+          "types"=>example_types,
+          "name"=>example_name
+        }
+      })
     end
 
     it "should be gettable" do

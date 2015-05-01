@@ -52,6 +52,30 @@ describe Message do
     expect(new_message.types).to eq(new_types)
   end
 
+  context 'when updated' do
+
+    let(:updated_body)  { 'updated body'  }
+    let(:updated_types) { 'updated_types' }
+
+    let(:original_name) { 'original_message' }
+    let(:original_types) { ['warning'] }
+    let(:original_body) { 'This is an example message body' }
+    let(:time_created) { Time.new('2015-01-01 16:30:00 +0100') }
+
+    let(:original_message) { Message.new(name:original_name,types:original_types,body:original_body) }
+
+    it 'it changes the properties' do
+
+      message = original_message
+      updated_message = message.update(body:updated_body,types:updated_types,invalid:'ignore')
+
+      expect(message.body).to eq(updated_body)
+      expect(message.types).to eq(updated_types)
+      expect(updated_message).to eq(message)
+    end
+
+  end
+
   context 'with invalid names' do
     let(:new_name) { '../new_message' }
 

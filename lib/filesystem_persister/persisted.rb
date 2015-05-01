@@ -131,6 +131,15 @@ module FilesystemPersister
       @errors ||= []
     end
 
+    def update(hash)
+      (self.class.persisted_attributes - [:name]).each do |attribute|
+        if hash[attribute]||hash[attribute.to_s]
+          instance_variable_set("@#{attribute}",hash[attribute]||hash[attribute.to_s])
+        end
+      end
+      self
+    end
+
     private
 
     attr_writer :name
