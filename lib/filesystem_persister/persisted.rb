@@ -160,6 +160,7 @@ module FilesystemPersister
 
     def add_error(new_error)
       errors << new_error unless errors.include?(new_error)
+      false
     end
   end
 end

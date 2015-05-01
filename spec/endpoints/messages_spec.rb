@@ -3,7 +3,7 @@ require './crier'
 
 describe Crier do
 
-  context 'the message index' do
+  context 'message index' do
     it "should display the messages" do
       get '/messages'
       expect(last_response).to be_ok
@@ -19,7 +19,7 @@ describe Crier do
         {"messages"=>[
           {
             "body"=>"This is an example",
-            "date"=>"2015-01-01 00:00:00 +0000",
+            "date"=>"2015-04-28 16:30:50 +0100",
             "types"=>["warning","status"],
             "name"=>"test_a"
           },
@@ -35,7 +35,7 @@ describe Crier do
 
     context 'should allow message creation' do
 
-      let(:time_created)  { Time.new('2015-01-01 16:30:00 +0100') }
+      let(:time_created)  { Time.parse('2015-01-01 16:30:00 +0100') }
       let(:at_fixed_time) { allow(Time).to receive(:now).and_return(time_created) }
 
       let(:example_name)         { 'example' }
@@ -43,7 +43,7 @@ describe Crier do
       let(:example_body)         { 'This is a message' }
       let(:example_types)        { ['type-a','type-b'] }
 
-      let(:message_to_save) { double('message_to_save').tap {|mts| expect(mts).to receive(:save)                                  } }
+      let(:message_to_save) { double('message_to_save').tap {|mts| expect(mts).to receive(:save).and_return(true) } }
 
       it 'via post' do
         at_fixed_time
@@ -64,7 +64,7 @@ describe Crier do
     let(:example_body)         { 'This is a message' }
     let(:example_types)        { ['type-a','type-b'] }
 
-    let(:time_created)  { Time.new('2015-01-01 16:30:00 +0100') }
+    let(:time_created)  { Time.parse('2015-01-01 16:30:00 +0100') }
     let(:at_fixed_time) { allow(Time).to receive(:now).and_return(time_created) }
 
     let(:message_to_delete) { double('message_to_delete').tap {|sfd| expect(sfd).to receive(:delete)                                  }  }
@@ -124,7 +124,7 @@ describe Crier do
       expect(JSON.load(last_response.body)).to eq(
         {"message"=>{
             "body"=>"This is an example",
-            "date"=>"2015-01-01 00:00:00 +0000",
+            "date"=>"2015-04-28 16:30:50 +0100",
             "types"=>["warning","status"],
             "name"=>"test_a"
           }

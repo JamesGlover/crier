@@ -40,7 +40,7 @@ class Message
   end
 
   def date
-    Time.new(@date) if @date
+    Time.parse(@date)
   end
 
   def date=(new_date)
@@ -52,8 +52,8 @@ class Message
   end
 
   def initialize(*args)
+    @date ||= Time.now.to_s
     super
-    self.date ||= Time.now
   end
 
   def classes
@@ -73,7 +73,7 @@ class Message
   ##
   # The age of the message in a friendly format eg. 3 weeks, 2 days
   def age
-    ChronicDuration.output((Time.now-date).floor, :format=>:long, :weeks=>true, :units=>2)||"Less than a second"
+    ChronicDuration.output(age_in_seconds, :format=>:long, :weeks=>true, :units=>2)||"Less than a second"
   end
 
 end
