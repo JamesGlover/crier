@@ -68,8 +68,8 @@ class Crier < Sinatra::Base
   end
 
   delete '/messages/:name' do
-    message = Message.find(params['name']) || pass
-    message.delete
+    message = Message.find(params['name'])
+    message.delete unless message.nil?
     respond_with :report, message:"Message #{params['name']} was deleted.",status:"success"
   end
 
@@ -83,6 +83,5 @@ class Crier < Sinatra::Base
     message.update(body:params['body'],types:params['types'])
     respond_with :message, message:message
   end
-
 
 end
