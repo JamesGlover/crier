@@ -14,8 +14,8 @@ class Message
 
   class << self
 
-    def message_level(level,time)
-      @warning_levels << [level,ChronicDuration.parse(time.to_s,:keep_zero=>true)]
+    def message_level(give_status:'default', after:0)
+      warning_levels << [ChronicDuration.parse(after.to_s,:keep_zero=>true),give_status]
       @warning_levels.sort! {|a,b| b.first <=> a.first }
     end
 
