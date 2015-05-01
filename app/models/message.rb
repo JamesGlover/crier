@@ -9,7 +9,8 @@ class Message
 
   persist_as_json :types, :body, :date
 
-  attr_accessor :types, :body
+  attr_accessor :body
+  attr_writer :types
 
   class << self
 
@@ -28,6 +29,14 @@ class Message
       end
     end
 
+  end
+
+  def valid?
+    super && (types.is_a?(Array) || add_error('Types must be an array'))
+  end
+
+  def types
+    @types||[]
   end
 
   def date
