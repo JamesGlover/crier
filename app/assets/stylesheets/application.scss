@@ -11,3 +11,7 @@
   @include make-md-column(3.9,0);
   @include make-md-column-offset(0.1);
 }
+
+#message_centre {
+  margin-top:2em;
+}
