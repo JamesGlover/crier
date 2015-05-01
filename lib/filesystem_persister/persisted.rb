@@ -21,7 +21,13 @@ module FilesystemPersister
         end
       end
 
+      def persisted_attributes
+        @persisted_attributes ||= [:name]
+      end
+
       private
+
+      attr_writer :persisted_attributes
 
       def valid_filename?(filename)
         return false unless FILENAME_FORMAT === filename
@@ -31,6 +37,10 @@ module FilesystemPersister
 
       def persisted_in(directory)
         @sub_dir = directory
+      end
+
+      def persist_as_json(*attributes)
+        self.persisted_attributes += attributes
       end
 
       def model_dir
@@ -107,7 +117,7 @@ module FilesystemPersister
     ##
     # Represent the record as a hash
     def to_hash
-      Hash[instance_variables.map {|v| [v.to_s.gsub('@',''),instance_variable_get(v)]}]
+      Hash[self.class.persisted_attributes.map {|v| [v,instance_variable_get("@#{v}")]}]
     end
 
     ##
@@ -126,8 +136,10 @@ module FilesystemPersister
     attr_writer :name
 
     def initialize(hash)
-      hash.each do |key,value|
-        instance_variable_set("@#{key}",value)
+      self.class.persisted_attributes.each do |attribute|
+        if hash[attribute]||hash[attribute.to_s]
+          instance_variable_set("@#{attribute}",hash[attribute]||hash[attribute.to_s])
+        end
       end
     end
 

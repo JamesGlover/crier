@@ -6,6 +6,8 @@ class Message
 
   include FilesystemPersister::Persisted
 
+  persist_as_json :types, :body, :date
+
   attr_accessor :types, :body
 
   def date
@@ -22,7 +24,7 @@ class Message
 
   def initialize(*args)
     super
-    self.date = Time.now unless date
+    self.date ||= Time.now
   end
 
   def classes
