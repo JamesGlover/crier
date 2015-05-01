@@ -14,6 +14,10 @@ gem 'puma'
 gem "bootstrap-sass"
 gem "sinatra-assetpack"
 
+# Provides friendly duration messages (3 seconds ago; 4 days ago)
+
+gem 'chronic_duration'
+
 group :test do
   # Rsepc drives the test suite
   gem "rspec"
