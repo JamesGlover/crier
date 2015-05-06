@@ -81,6 +81,7 @@ class Crier < Sinatra::Base
   put '/messages/:name' do
     message = Message.find(params['name']) || pass
     message.update(body:params['body'],types:params['types'])
+    message.save
     respond_with :message, message:message
   end
 
