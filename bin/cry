@@ -39,6 +39,7 @@ function cry_update() {
   cry_checkname $2
   cry_parse_styles $@
   temp_file=`mktemp -t cry`
+  curl $CRY_PATH/messages/$2 -H 'Accept:text/plain' -o $temp_file
   $EDITOR $temp_file
   curl -X PUT $CRY_PATH/messages/$2 -H 'Accept:application/json' --data-urlencode body@$temp_file $CRY_STYLES
   exit 0

@@ -47,7 +47,7 @@ class Crier < Sinatra::Base
     css_compression :sass
   end
 
-  respond_to :html, :json
+  respond_to :html, :json, :text
 
   get '/' do
     redirect '/messages'
@@ -75,7 +75,9 @@ class Crier < Sinatra::Base
 
   get '/messages/:name' do
     message = Message.find(params['name']) || pass
-    respond_with :message, message:message
+    respond_with :message, message:message do |f|
+      f.txt { message.body }
+    end
   end
 
   put '/messages/:name' do
