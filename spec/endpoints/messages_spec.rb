@@ -91,6 +91,7 @@ describe Crier do
 
     it "should be updateable" do
       expect(Message).to receive(:find).with(example_name).and_return(message_to_update)
+      expect(message_to_update).to receive(:save).and_return(true)
       put "/messages/#{example_name}", body:example_body,types:example_types
       expect(last_response).to be_ok
       expect(last_response.body).to include example_body
@@ -98,6 +99,7 @@ describe Crier do
 
     it "should be updateable vi the api" do
       expect(Message).to receive(:find).with(example_name).and_return(message_to_update)
+      expect(message_to_update).to receive(:save).and_return(true)
       put_json "/messages/#{example_name}", body:example_body,types:example_types
       expect(last_response).to be_ok
       expect(JSON.load(last_response.body)).to eq({
