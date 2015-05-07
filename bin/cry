@@ -6,6 +6,7 @@ ARGS="cry (create|update|delete|help) <name> [low-priority] [success|default|pri
 UNIDENTIFIED_COMMAND=1
 NO_MESSAGE_NAME_PROVIDED=2
 NO_PATH_SET=3
+MESSAGE_MISSING=4
 
 function cry_help() {
   cat <<HELPTEXT
@@ -39,7 +40,7 @@ function cry_update() {
   cry_checkname $2
   cry_parse_styles $@
   temp_file=`mktemp -t cry`
-  curl $CRY_PATH/messages/$2 -H 'Accept:text/plain' -o $temp_file
+  curl $CRY_PATH/messages/$2 -H 'Accept:text/plain' -o $temp_file -f -s || cry_message_fail
   $EDITOR $temp_file
   curl -X PUT $CRY_PATH/messages/$2 -H 'Accept:application/json' --data-urlencode body@$temp_file $CRY_STYLES
   exit 0
@@ -81,6 +82,11 @@ function cry_checkpath() {
 function cry_check_config() {
   cry_checkpath
   if ! [ $EDITOR ];   then EDITOR=`which vi || which emacs || which edit`; fi
+}
+
+function cry_message_fail() {
+  echo 'Message does not exit. Try create instead of update.'
+  exit $MESSAGE_MISSING
 }
 
 function cry_parse_styles() {
